@@ -1,57 +1,112 @@
-export default function SignupPage() {
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
+import { z } from "zod";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const signUpForm = z.object({
+  managerName: z.string(),
+  restaurantName: z.string(),
+  phone: z.string(),
+  email: z.string().email(),
+});
+type SignUpForm = z.infer<typeof signUpForm>;
+
+export default function SignUp() {
+  const navigate = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignUpForm>();
+
+  async function handleSignUp(data: SignUpForm) {
+    try {
+      console.log(data);
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      toast.success("Restaurante cadastrado com sucesso!", {
+        action: {
+          label: "Login",
+          onClick: () => navigate.push("/signin"),
+        },
+      });
+    } catch {
+      toast.error("Erro ao cadastrar restaurante.");
+    }
+  }
+
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Cadastro</h2>
-      <form>
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Nome
-          </label>
-          <input
-            type="text"
-            id="name"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            placeholder="Seu nome"
-          />
+    <>
+      <Toaster richColors />
+      <div className="p-8">
+        <Button variant={"default"} asChild className="absolute right-8 top-8">
+          <Link href="/signin">Fazer Login</Link>
+        </Button>
+        <div className="flex w-[350px] flex-col justify-center gap-6">
+          <div className="flex flex-col gap-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight">
+              Criar conta grátis
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Seja um parceiro e comece suas vendas!
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(handleSignUp)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="managerName">Seu nome completo</Label>
+              <Input
+                required
+                id="managerName"
+                type="text"
+                {...register("managerName")}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="restaurantName">Nome do estabelecimento</Label>
+              <Input
+                required
+                id="restaurantName"
+                type="text"
+                {...register("restaurantName")}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Seu e-mail</Label>
+              <Input required id="email" type="email" {...register("email")} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Seu celular</Label>
+              <Input required id="phone" type="tel" {...register("phone")} />
+            </div>
+
+            <Button disabled={isSubmitting} className="w-full" type="submit">
+              Finalizar cadastro
+            </Button>
+            <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
+              Ao continuar, você concorda com nossos{" "}
+              <Link className="underline underline-offset-4" href="">
+                Termos de serviço
+              </Link>{" "}
+              e{" "}
+              <Link className="underline underline-offset-4" href="">
+                políticas de privacidade
+              </Link>
+            </p>
+          </form>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            placeholder="Seu email"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Senha
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            placeholder="Sua senha"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Cadastrar
-        </button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }
