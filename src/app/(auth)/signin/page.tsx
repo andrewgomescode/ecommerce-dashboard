@@ -18,7 +18,7 @@ type SignInForm = z.infer<typeof signInForm>;
 
 export default function SignIn() {
   useEffect(() => {
-    document.title = "Login - pizza.shop";
+    document.title = "Login - Agência Tektus";
   }, []);
 
   const {
@@ -49,7 +49,7 @@ export default function SignIn() {
       <Toaster richColors />
       <div className="p-8">
         <Button variant={"default"} asChild className="absolute right-8 top-8">
-          <Link href="/signup">Novo estabelecimento</Link>
+          <Link href="/signup">Novo cadastro</Link>
         </Button>
         <div className="flex w-[350px] flex-col justify-center gap-6">
           <div className="flex flex-col gap-2 text-center">

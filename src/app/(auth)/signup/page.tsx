@@ -32,14 +32,14 @@ export default function SignUp() {
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      toast.success("Restaurante cadastrado com sucesso!", {
+      toast.success("Parceiro cadastrado com sucesso!", {
         action: {
           label: "Login",
           onClick: () => navigate.push("/signin"),
         },
       });
     } catch {
-      toast.error("Erro ao cadastrar restaurante.");
+      toast.error("Erro ao realizar o cadastrar.");
     }
   }
 

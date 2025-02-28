@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { sourceSans } from "@/fonts/sourceSans";
-import { Providers } from "@/app/providers";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "pizza.shop",
@@ -16,7 +16,9 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="pt-br">
       <body className={`${sourceSans.className} antialiased`}>
-        <Providers>{children}</Providers>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
